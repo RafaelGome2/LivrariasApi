@@ -1,5 +1,0 @@
-
- 
-iniciei: 21:00 aula 58
-parei:  - aula 
-proxima aula: 
