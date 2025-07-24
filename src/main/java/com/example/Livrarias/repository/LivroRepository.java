@@ -1,11 +1,11 @@
 package com.example.Livrarias.repository;
 
-import java.util.UUID;
-
+import com.example.Livrarias.model.Livro;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.Livrarias.model.autor.Livro;
+import java.util.UUID;
+
 @Repository
 public interface LivroRepository extends JpaRepository<Livro, UUID> {
 

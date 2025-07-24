@@ -1,0 +1,6 @@
+com\example\Livrarias\model\autor\Livro.class
+com\example\Livrarias\LivrariasApplication.class
+com\example\Livrarias\config\dataBaseConfiguration.class
+com\example\Livrarias\model\autor\Autor.class
+com\example\Livrarias\repository\AutorRepository.class
+com\example\Livrarias\repository\LivroRepository.class
