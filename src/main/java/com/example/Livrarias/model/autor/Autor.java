@@ -21,18 +21,14 @@ import lombok.ToString;
 @Table(name ="autor" , schema = "public")
 @Getter
 @Setter
-@ToString
+
 public class Autor {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "id", nullable = false )
 	private UUID id;
-	 @Deprecated 
-//constructor para uso do framework	 
-	public Autor() {
-		// TODO Auto-generated constructor stub
-	 };
+	
 	 
 	@Column (name ="name" , nullable = false, length = 100)
 	private String name;
@@ -43,8 +39,14 @@ public class Autor {
 	@Column (name= "nascionalidade",  nullable= false, length =50)
 	private String nascionalidade;
 	
-	@OneToMany (mappedBy = "autor")
+	@OneToMany (mappedBy = "autor")@ToString.Exclude
 	private List<Livro> livros;
+	
+	
+	 public Autor() {
+     // TODO Auto-generated constructor stub
+ }
+	
 	public UUID getId() {
 		return id;
 	}
@@ -76,6 +78,7 @@ public class Autor {
 	public void setNascionalidade(String nascionalidade) {
 		this.nascionalidade = nascionalidade;
 	}
+	
 
 	public List<Livro> getLivros() {
 		return livros;
@@ -83,6 +86,12 @@ public class Autor {
 
 	public void setLivros(List<Livro> livros) {
 		this.livros = livros;
+	}
+
+	@Override
+	public String toString() {
+		return "Autor [id=" + id.toString() + ", name=" + name + ", dataNascimento=" + dataNascimento + ", nascionalidade="
+				+ nascionalidade + "]";
 	}
 	
 }

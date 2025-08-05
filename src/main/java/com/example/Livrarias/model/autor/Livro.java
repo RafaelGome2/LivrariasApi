@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,8 +38,11 @@ public class Livro {
 	@Column(name = "data_publicaçao", nullable = false)
 	private LocalDate dataPublicaçao;
 	
+	
+
+	@Enumerated (EnumType.STRING)
 	@Column(name= "genero", length=30, nullable= false)
-	private String genero;
+	private LivroGenero genero;
 	
 	@Column(name="preço", precision = 18, scale=2 )
 	private BigDecimal preço;
@@ -45,6 +50,68 @@ public class Livro {
 	@ManyToOne
 	@JoinColumn(name = "id_autor")    
 	private Autor autor;
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+	public String getIsbn() {
+		return isbn;
+	}
+
+	public void setIsbn(String isbn) {
+		this.isbn = isbn;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public LocalDate getDataPublicaçao() {
+		return dataPublicaçao;
+	}
+
+	public void setDataPublicaçao(LocalDate dataPublicaçao) {
+		this.dataPublicaçao = dataPublicaçao;
+	}
+
+	public LivroGenero getGenero() {
+		return genero;
+	}
+
+	public void setGenero(LivroGenero genero) {
+		this.genero = genero;
+	}
+
+	public BigDecimal getPreço() {
+		return preço;
+	}
+
+	public void setPreço(BigDecimal preço) {
+		this.preço = preço;
+	}
+
+	public Autor getAutor() {
+		return autor;
+	}
+
+	public void setAutor(Autor autor) {
+		this.autor = autor;
+	}
+	
+	@Override
+	public String toString() {
+		return "Livro [id=" + id + ", isbn=" + isbn + ", titulo=" + titulo + ", dataPublicaçao=" + dataPublicaçao
+				+ ", genero=" + genero + ", preço=" + preço + ", autor=" + autor + "]";
+	}
 	
 	
   
