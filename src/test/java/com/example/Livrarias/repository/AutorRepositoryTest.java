@@ -1,7 +1,9 @@
 package com.example.Livrarias.repository;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.example.Livrarias.model.autor.Autor;
+import com.example.Livrarias.model.autor.Livro;
+import com.example.Livrarias.model.autor.LivroGenero;
 import com.example.Livrarias.repository.AutorRepository;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
@@ -27,6 +31,9 @@ import ch.qos.logback.core.net.SyslogOutputStream;
            this.repository = repository;
        }
 
+	 @Autowired
+	 LivroRepository livroRepository;
+	     
     
 	  public void salvarTest() {
 		Autor autor = new Autor();
@@ -64,13 +71,41 @@ import ch.qos.logback.core.net.SyslogOutputStream;
   public void listarTest() {
   	List<Autor> lista = repository.findAll();
   	lista.forEach(System.out::println);
-  	   
-  } 
+  	     }
+    
+ // aula 64
+    @Test 
+      void salvarAutorCLivros() {
+      	Autor autor = new Autor();
+    		autor.setName("Antonio");
+    		autor.setDataNascimento(LocalDate.of(1950, 6, 1));
+    		autor.setNascionalidade("Americano");
+    			
+    		Livro livro = new Livro();
+    		livro.setIsbn("212187-658");
+    		livro.setDataPublicaçao(LocalDate.of(2000, 12, 1));
+    		livro.setGenero(LivroGenero.ROMANCE);
+    		livro.setPreço(BigDecimal.valueOf(199));
+    		livro.setTitulo("O melhor amigo do homem");
+    		livro.setAutor(autor);
+    		
+    		Livro livro2 = new Livro();
+    		livro2.setIsbn("212187-7896");
+    		livro2.setDataPublicaçao(LocalDate.of(2001, 12, 1));
+    		livro2.setGenero(LivroGenero.MISTERIO);
+    		livro2.setPreço(BigDecimal.valueOf(99));
+    		livro2.setTitulo("O roubo da casa branca");
+    		livro2.setAutor(autor);
+    		
+    		autor.setLivros(new ArrayList<>());
+    		autor.getLivros().add(livro);//pega lista "livros" e add objetos Livros a esta.
+    		autor.getLivros().add(livro2);
+    			
+    		repository.save(autor);
+    		livroRepository.saveAll(autor.getLivros());
+    		}
+      
   
-	/*
-	 * public void deletePorObj() { var id= UUID.fromString();
-	 */
-  	
-  
+	
   
 }
