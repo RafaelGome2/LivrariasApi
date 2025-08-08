@@ -58,10 +58,8 @@ public class LivroRepositoryTest {
 		 Livro livro = repository.findById(UUID.fromString("0d61c918-ae44-4df2-a785-c02b863d2f3c")).orElse(null);
 		 System.out.print("Titulo: "+livro.getTitulo()+"  ");
 		 System.out.println("Autor: "+livro.getAutor().getName());
+		 
 	 }
-// AULA 64
-	 
-
 	 
 	}
 
