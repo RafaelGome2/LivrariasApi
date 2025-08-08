@@ -40,8 +40,8 @@ public class LivroRepositoryTest {
 		List<Livro> listaLivro= repository.findAll();
 		listaLivro.forEach((Livro)-> System.out.println(Livro));
 					}	
-	//aula 62 - atualizando autor de um livro
-	@Test
+//aula 62 - atualizando autor de um livro
+	
 	 void atualizarAutorDoLivro() {
 		 Livro livroPatualizar = repository.findById(UUID.fromString(
 				 "0d61c918-ae44-4df2-a785-c02b863d2f3c"))
@@ -52,6 +52,12 @@ public class LivroRepositoryTest {
 		 
 		 livroPatualizar.setAutor(Maria);
 		 repository.save(livroPatualizar);
+		 	 }
+	 @Test // ** aula 63- 
+	 void buscarLivro() {
+		 Livro livro = repository.findById(UUID.fromString("0d61c918-ae44-4df2-a785-c02b863d2f3c")).orElse(null);
+		 System.out.print("Titulo: "+livro.getTitulo()+"  ");
+		 System.out.println("Autor: "+livro.getAutor().getName());
 		 
 	 }
 	 
