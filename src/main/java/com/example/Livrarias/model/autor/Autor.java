@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Transient;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,7 +22,7 @@ import lombok.ToString;
 @Table(name ="autor" , schema = "public")
 @Getter
 @Setter
-
+@ToString(exclude= "livros")
 public class Autor {
 
 	@Id
@@ -39,7 +40,7 @@ public class Autor {
 	@Column (name= "nascionalidade",  nullable= false, length =50)
 	private String nascionalidade;
 	
-	@OneToMany (mappedBy = "autor")@ToString.Exclude
+	@OneToMany (mappedBy = "autor", fetch=FetchType.LAZY) @ToString.Exclude
 	private List<Livro> livros;
 	
 	
@@ -90,8 +91,9 @@ public class Autor {
 
 	@Override
 	public String toString() {
-		return "Autor [id=" + id.toString() + ", name=" + name + ", dataNascimento=" + dataNascimento + ", nascionalidade="
+		return "Autor [id=" + id + ", name=" + name + ", dataNascimento=" + dataNascimento + ", nascionalidade="
 				+ nascionalidade + "]";
 	}
-	
+
+		
 }

@@ -8,6 +8,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,10 +18,12 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Data
 @Table (name = "livro", schema= "public")
+@ToString (exclude = "autor")
 public class Livro {
 	public Livro() {}
 	
@@ -47,10 +50,12 @@ public class Livro {
 	@Column(name="preço", precision = 18, scale=2 )
 	private BigDecimal preço;
 	
-	@ManyToOne
+	@ManyToOne( fetch= FetchType.LAZY)
 	@JoinColumn(name = "id_autor")    
 	private Autor autor;
 
+	
+// ***** getters and setters ******
 	public UUID getId() {
 		return id;
 	}
@@ -106,13 +111,13 @@ public class Livro {
 	public void setAutor(Autor autor) {
 		this.autor = autor;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Livro [id=" + id + ", isbn=" + isbn + ", titulo=" + titulo + ", dataPublicaçao=" + dataPublicaçao
-				+ ", genero=" + genero + ", preço=" + preço + ", autor=" + autor + "]";
+				+ ", genero=" + genero + ", preço=" + preço + "]";
 	}
-	
+
 	
   
 	
