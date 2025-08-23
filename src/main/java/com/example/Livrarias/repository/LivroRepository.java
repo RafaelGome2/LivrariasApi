@@ -4,12 +4,16 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.Livrarias.model.autor.Autor;
 import com.example.Livrarias.model.autor.Livro;
+import com.example.Livrarias.model.autor.LivroGenero;
+
+import jakarta.transaction.Transactional;
 @Repository
 public interface LivroRepository extends JpaRepository<Livro, UUID> {
 		
@@ -28,6 +32,11 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> {
 	
 // aula 69	
 	@Query("select livro from Livro livro order by livro.preço")
-	 List<Livro> OrdenarPor();
+	 List<Livro> OrdenarPorPreço();
 	
+// aula 70 -- delete
+	@Modifying
+	@Transactional
+	@Query ("delete from Livro where genero = ?1")
+	void deleteByGenero(LivroGenero genero);
 }

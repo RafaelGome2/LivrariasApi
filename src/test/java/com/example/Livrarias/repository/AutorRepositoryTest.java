@@ -64,7 +64,7 @@ import jakarta.persistence.FetchType;
     	Long count= repository.count();
     	System.out.println("numero de altores= "+ count);
   }
-    
+    @Test
   public void listarTest() {
   	List<Autor> lista = repository.findAll();
   	lista.forEach(System.out::println);
@@ -74,7 +74,7 @@ import jakarta.persistence.FetchType;
  
       void salvarAutorCLivros() {
       	Autor autor = new Autor();
-    		autor.setName("Antonio");
+    		autor.setName("Antonio"); 
     		autor.setDataNascimento(LocalDate.of(1950, 6, 1));
     		autor.setNascionalidade("Americano");
     			
