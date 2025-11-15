@@ -16,7 +16,8 @@ import com.example.Livrarias.model.autor.LivroGenero;
 import jakarta.transaction.Transactional;
 @Repository
 public interface LivroRepository extends JpaRepository<Livro, UUID> {
-		
+	
+	
 	//aula 65 
 	//Query method - select*from livro where id_autor = id;
 	List<Livro> findByAutor(Autor autor);
@@ -39,4 +40,8 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> {
 	@Transactional
 	@Query ("delete from Livro where genero = ?1")
 	void deleteByGenero(LivroGenero genero);
+
+	//aula 90 
+	boolean existsByAutor(Autor autor);
+
 }

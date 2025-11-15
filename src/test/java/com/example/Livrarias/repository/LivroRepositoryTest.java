@@ -32,7 +32,7 @@ public class LivroRepositoryTest {
 		livro.setPreço(BigDecimal.valueOf(299.00));
 		livro.setTitulo("Sistemas operacionais: fundamentos e aplicaçoes práticas");
 
-		Autor autor = autorrepository.findById(UUID.fromString("4f1b5629-af31-4e96-8107-17f8d95d1126")).orElse(null);
+		Autor autor = autorrepository.findById(UUID.fromString("ad59e5d5-4567-4ba9-a6ab-766e6e717d4a")).orElse(null);
 		livro.setAutor(autor);
 		repository.save(livro);
 	}
