@@ -10,6 +10,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class AutorDTO {
@@ -18,10 +20,13 @@ public class AutorDTO {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "id", nullable = false )
 	private UUID id;
+	@NotBlank(message ="campo obrigatorio")
 	private String name;
+	@NotNull(message ="campo obrigatorio")
 	private LocalDate dataNascimento;
+	@NotBlank(message ="campo obrigatorio")
 	private String nascionalidade;
-	
+	;
 	
 	@Override
 	public String toString() {

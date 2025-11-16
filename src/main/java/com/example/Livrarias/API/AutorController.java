@@ -32,6 +32,8 @@ import com.example.Livrarias.exceptions.operaçaoNaoPermitida;
 import com.example.Livrarias.model.autor.Autor;
 import com.example.Livrarias.service.AutorService;
 
+import jakarta.validation.Valid;
+
 //aula 79
 @RestController
 @RequestMapping("/autores")
@@ -46,7 +48,7 @@ public class AutorController {
 
 //aula 81
 	@PostMapping
-	public ResponseEntity<Object> salvar(@RequestBody AutorDTO  autor) {
+	public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO  autor) {
 	try {// aula 89
 		Autor autorEntidade= autor.mapearParaAutor();
 		service.salvar(autorEntidade);
