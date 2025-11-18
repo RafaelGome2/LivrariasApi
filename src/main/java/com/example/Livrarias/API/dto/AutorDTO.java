@@ -12,19 +12,22 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class AutorDTO {
-
+//aula 94 17/11/2025
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "id", nullable = false )
 	private UUID id;
-	@NotBlank(message ="campo obrigatorio")
+	@NotBlank(message ="campo obrigatorio") @Size(max = 100, min=2,message ="nome deve ter tamanho de 2 até 100 catacteres")
 	private String name;
-	@NotNull(message ="campo obrigatorio")
+	@NotNull(message ="campo obrigatorio") @Past(message= "a data de nascimento deve estar no passado")
 	private LocalDate dataNascimento;
 	@NotBlank(message ="campo obrigatorio")
+	@Size (max= 50, min=2, message ="nascionalidade deve ter tamanho de 2 até 50 catacteres")
 	private String nascionalidade;
 	;
 	
