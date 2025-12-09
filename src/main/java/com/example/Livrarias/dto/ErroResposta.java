@@ -1,4 +1,4 @@
-package com.example.Livrarias.API.dto;
+package com.example.Livrarias.dto;
 
 import java.util.List;
 

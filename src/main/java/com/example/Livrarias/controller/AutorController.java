@@ -1,4 +1,4 @@
-package com.example.Livrarias.API;
+package com.example.Livrarias.controller;
 
 import java.net.URI;
 import java.net.http.HttpHeaders;
@@ -24,9 +24,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.example.Livrarias.API.dto.AutorDTO;
-import com.example.Livrarias.API.dto.ErroResposta;
+import com.example.Livrarias.controller.mappers.AutorMapper;
 import com.example.Livrarias.data.Data;
+import com.example.Livrarias.dto.AutorDTO;
+import com.example.Livrarias.dto.ErroResposta;
 import com.example.Livrarias.exceptions.RegistroDuplicadoException;
 import com.example.Livrarias.exceptions.operaçaoNaoPermitida;
 import com.example.Livrarias.model.autor.Autor;
@@ -40,17 +41,19 @@ import jakarta.validation.Valid;
 //http: //localhost:8080/autores
 public class AutorController {
 	private AutorService service;
-	
-	public AutorController(AutorService service) {
+	private final AutorMapper mapper; //aula 99 7/12/2025
+//*** construtor 
+	public AutorController(AutorService service, AutorMapper mapper) {
 		this.service = service;
+		this.mapper= mapper;
 	}
 
 
 //aula 81
 	@PostMapping
-	public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO  autor) {
+	public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO  dto) {
 	try {// aula 89
-		Autor autorEntidade= autor.mapearParaAutor();
+		Autor autorEntidade= mapper.toEntity(dto);
 		service.salvar(autorEntidade);
 		// http://localhost:8080/autores/id do autor...
    	URI location =	ServletUriComponentsBuilder
@@ -71,16 +74,15 @@ public class AutorController {
 	@GetMapping("{id}")
 	public ResponseEntity<AutorDTO> obterDetalhes(@PathVariable("id") String id){
 		var idAutor= UUID.fromString(id);
-		Optional<Autor> autorOptional = service.ObterPorId(idAutor);
-		if(autorOptional.isPresent()) {//caso autor existir
-			Autor autor = autorOptional.get();
-			AutorDTO dto= new AutorDTO(autor.getId(), autor.getName(),
-					autor.getDataNascimento(), autor.getNascionalidade());
-			return ResponseEntity.ok(dto);
-					}
-//caso o Autor nao existir
-		return ResponseEntity.notFound().build();
-		}
+			
+		 return service
+				 .ObterPorId(idAutor)
+				 .map(autor -> {
+					 AutorDTO dto = mapper.toDTO(autor);
+					 return ResponseEntity.ok(dto);
+				 }).orElseGet(()-> ResponseEntity.notFound().build());		
+				 
+			}
 	
 	
 // aula 84 - deletar do banco de dados com HTTP
@@ -112,7 +114,7 @@ public class AutorController {
 		public ResponseEntity<List<AutorDTO>> pesquisa(	@RequestParam (value="nome", required = false) 
 		String name,
 				@RequestParam(value= "nascionalidade", required = false) String nascionalidade){
-			List<Autor> lista= service.pesquisa(name, nascionalidade);
+			List<Autor> lista= service.pesquisaByExemple(name, nascionalidade);
 			
 			  List<AutorDTO> listDto = lista.stream().map(autor -> new AutorDTO(
 			  autor.getId(), autor.getName(), autor.getDataNascimento(),

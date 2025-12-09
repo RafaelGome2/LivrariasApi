@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.example.Livrarias.API.dto.ErroCampo;
-import com.example.Livrarias.API.dto.ErroResposta;
+import com.example.Livrarias.dto.ErroCampo;
+import com.example.Livrarias.dto.ErroResposta;
 
 //aula 93 15/11/2025
 @RestControllerAdvice

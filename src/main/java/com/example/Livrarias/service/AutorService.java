@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.ListableBeanFactory;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import com.example.Livrarias.exceptions.operaçaoNaoPermitida;
@@ -70,6 +72,21 @@ public class AutorService {
  public boolean possuiLivro(Autor autor) {
 	 	 return livroRepository.existsByAutor(autor);
  }
+ //aula 95- 
+ public List<Autor> pesquisaByExemple(String nome, String nascionalidade){
+	var autor = new Autor();
+	autor.setName(nome);
+	autor.setNascionalidade(nascionalidade);
+	
+	ExampleMatcher matcher = ExampleMatcher
+			.matching()
+			.withIgnoreNullValues()
+			.withIgnoreCase()
+			.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+	Example<Autor> autorExample = Example.of(autor, matcher);
+	return repository.findAll(autorExample);
+ }
+ 
  
  
 }

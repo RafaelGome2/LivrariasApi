@@ -1,4 +1,4 @@
-package com.example.Livrarias.API.dto;
+package com.example.Livrarias.dto;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -44,16 +44,6 @@ public class AutorDTO {
 	  this.dataNascimento =	  dataNascimento; 
 	  this.nascionalidade = nascionalidade; }
 	 
-
-	public Autor mapearParaAutor() {
-		 Autor autor = new Autor();
-		 autor.setName(this.name);
-		 autor.setDataNascimento(this.dataNascimento);
-		 autor.setNascionalidade(this.nascionalidade);
-		 
-		return autor;
-	}
-
 	
 	// ***
 	public UUID getId() {
