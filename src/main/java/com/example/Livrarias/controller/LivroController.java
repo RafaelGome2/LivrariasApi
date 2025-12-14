@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Livrarias.dto.CadastroLivroDto;
-import com.example.Livrarias.dto.ErroResposta;
+import com.example.Livrarias.controller.dto.CadastroLivroDto;
+import com.example.Livrarias.controller.dto.ErroResposta;
 import com.example.Livrarias.exceptions.RegistroDuplicadoException;
+import com.example.Livrarias.model.autor.Livro;
 import com.example.Livrarias.service.LivroService;
-
+import com.example.Livrarias.mappers.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 // aula 98
@@ -19,30 +20,23 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("livros")
 @RequiredArgsConstructor
-public class LivroController {
+public class LivroController implements GenericControllers {
 
 	private final LivroService service;
-	
-	public LivroController(LivroService service) {
+	private final LivroMapper livroMapper;
+
+	public LivroController(LivroService service, LivroMapper livroMapper) {
 		this.service = service;
+		this.livroMapper = livroMapper;// aula 101
 	}
 
 	@PostMapping
-	public ResponseEntity<Object> salvar(@RequestBody @Valid CadastroLivroDto dto){
-		try {
-	// mapeat dto para entidade
-	// enviar a entidade para o serviço validar e salvar na base
-// criar url para acesso dos dados do livro
-// retornar codigo created com header location
-			return ResponseEntity.ok(dto);
-			
-			
-		} catch (RegistroDuplicadoException e) {
-			var erroDTO = ErroResposta.conflito(e.getMessage());
-			return ResponseEntity.status(erroDTO.status()).body(erroDTO);
-			// TODO: handle exception
-		}
-		
+	public ResponseEntity<Object> salvar(@RequestBody @Valid CadastroLivroDto dto) {
+		Livro livro = livroMapper.toEntity(dto);
+		service.salvar(livro);
+		var url = gerarHeaderLocation(livro.getId());
+		return ResponseEntity.created(url).build();
+
 	}
 
 }

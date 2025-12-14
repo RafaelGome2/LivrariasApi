@@ -9,6 +9,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.apache.tomcat.util.http.parser.HttpHeaderParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.graphql.GraphQlProperties.Http;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -24,52 +25,48 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.example.Livrarias.controller.mappers.AutorMapper;
+import com.example.Livrarias.controller.dto.AutorDTO;
+import com.example.Livrarias.controller.dto.ErroResposta;
 import com.example.Livrarias.data.Data;
-import com.example.Livrarias.dto.AutorDTO;
-import com.example.Livrarias.dto.ErroResposta;
 import com.example.Livrarias.exceptions.RegistroDuplicadoException;
 import com.example.Livrarias.exceptions.operaçaoNaoPermitida;
 import com.example.Livrarias.model.autor.Autor;
 import com.example.Livrarias.service.AutorService;
-
 import jakarta.validation.Valid;
-
+import lombok.RequiredArgsConstructor;
+import com.example.Livrarias.mappers.*;
 //aula 79
 @RestController
 @RequestMapping("/autores")
+@RequiredArgsConstructor
 //http: //localhost:8080/autores
-public class AutorController {
-	private AutorService service;
+public class AutorController implements GenericControllers{
+
+	private final AutorService service;
 	private final AutorMapper mapper; //aula 99 7/12/2025
-//*** construtor 
+
+	//*** construtor 
 	public AutorController(AutorService service, AutorMapper mapper) {
 		this.service = service;
-		this.mapper= mapper;
+		this.mapper = mapper;
 	}
-
 
 //aula 81
 	@PostMapping
 	public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO  dto) {
-	try {// aula 89
+
 		Autor autorEntidade= mapper.toEntity(dto);
 		service.salvar(autorEntidade);
-		// http://localhost:8080/autores/id do autor...
-   	URI location =	ServletUriComponentsBuilder
-		.fromCurrentRequest()
-		.path("/{id}")
-		.buildAndExpand(autorEntidade.getId())
-		.toUri();
-		
+		// aula 102
+   	URI location =	gerarHeaderLocation(autorEntidade.getId());
 		return ResponseEntity.created(location).build();
 		
-	} catch (RegistroDuplicadoException e) {
-		var erroDTO = ErroResposta.conflito(e.getMessage());
-		return ResponseEntity.status(erroDTO.status()).body(erroDTO);
-		}		
-		}
 	
+		}		
+		
+	
+
+
 	// aula 83- obtendo dados do autor, com GET
 	@GetMapping("{id}")
 	public ResponseEntity<AutorDTO> obterDetalhes(@PathVariable("id") String id){
@@ -87,20 +84,16 @@ public class AutorController {
 	
 // aula 84 - deletar do banco de dados com HTTP
 		@DeleteMapping("{id}")
-	public ResponseEntity<Object>  deletarAutor(@PathVariable("id") String id){
-		try {
+		public ResponseEntity<Object> deletarAutor(@PathVariable("id") String id) {
 			var idAutor = UUID.fromString(id);
-		Optional<Autor> autorOptional =service.ObterPorId(idAutor);
-		if(autorOptional.isEmpty()) {
-			return ResponseEntity.notFound().build();}
-		
-		service.deletar(autorOptional.get());
-		return ResponseEntity.noContent().build();
-		}
-		catch (operaçaoNaoPermitida e) {
-			var erroResposta= ErroResposta.respostaPadrao(e.getMessage());
-			return ResponseEntity.status(erroResposta.status()).body(erroResposta);
+			Optional<Autor> autorOptional = service.ObterPorId(idAutor);
+			if (autorOptional.isEmpty()) {
+				return ResponseEntity.notFound().build();
 			}
+
+			service.deletar(autorOptional.get());
+			return ResponseEntity.noContent().build();
+
 		}
 		
 		//retorna a concatenaçao de id + nome

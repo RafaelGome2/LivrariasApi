@@ -1,4 +1,4 @@
-package com.example.Livrarias.dto;
+package com.example.Livrarias.controller.dto;
 
 import java.time.LocalDate;
 import java.util.UUID;

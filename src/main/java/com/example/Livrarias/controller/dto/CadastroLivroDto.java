@@ -1,4 +1,4 @@
-package com.example.Livrarias.dto;
+package com.example.Livrarias.controller.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
